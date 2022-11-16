@@ -157,7 +157,7 @@ function App() {
           >
             Start quiz
           </button>
-          <h5 className="absolute bottom-0 right-0 text-xs">
+          <h5 className="absolute bottom-10 left-0 right-0 text-center text-sm">
             Mateusz McCowsky Makowski, 2022
           </h5>
         </header>
