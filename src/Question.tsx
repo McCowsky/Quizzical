@@ -8,15 +8,15 @@ interface Question {
   id: string;
   question: string;
   correctAnswer: string;
-  incorrectAnswers: any;
+  incorrectAnswers: string[];
   selectedAnswer: string;
-  //showAnswer: boolean;
   clickedAnswer: any;
   checkingAnswers: boolean;
+  acceptingAnswers: boolean;
 }
 
 const Question = (props: Question) => {
-  let allAnswersElements = props.incorrectAnswers.map((incorrectAnswer: any) => {
+  let allAnswersElements = props.incorrectAnswers.map((incorrectAnswer: string) => {
     return (
       <button
         key={nanoid()}
@@ -30,6 +30,8 @@ const Question = (props: Question) => {
         }}
         className="min-w-[60px] min-h-[20px] px-3 py-1 rounded-lg border-[1px] border-[#4D5B9E] text-xs sm:text-sm text-[#293264] font-semibold"
         onClick={() => {
+          if (!props.acceptingAnswers) return;
+
           props.clickedAnswer(props.id, incorrectAnswer);
         }}
       >
@@ -52,6 +54,8 @@ const Question = (props: Question) => {
         "min-w-[60px] min-h-[20px] px-3 py-1 rounded-lg border-[1px] border-[#4D5B9E] text-xs sm:text-sm text-[#293264] font-semibold"
       }
       onClick={() => {
+        if (!props.acceptingAnswers) return;
+
         props.clickedAnswer(props.id, props.correctAnswer);
       }}
     >

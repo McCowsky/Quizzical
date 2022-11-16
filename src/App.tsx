@@ -2,6 +2,7 @@ import { nanoid } from "nanoid";
 import React, { useEffect, useState } from "react";
 import Question from "./Question";
 import Fetch_Questions from "./Fetch_Questions";
+import { AiOutlineHome } from "react-icons/ai";
 
 function App() {
   const [gameOn, setGameOn] = useState(false);
@@ -14,6 +15,7 @@ function App() {
     category: 0,
     difficulty: "any",
   });
+  const [acceptingAnswers, setAcceptingAnswers] = useState(false);
 
   useEffect(() => {
     Fetch_Questions(formData).then((questions) => {
@@ -23,7 +25,7 @@ function App() {
             id: nanoid(),
             ...question,
             selectedAnswer: "",
-            showAnswer: false,
+            acceptingAnswers: true,
           };
         })
       );
@@ -38,35 +40,36 @@ function App() {
       correctAnswer={question.correct_answer}
       incorrectAnswers={question.incorrect_answers}
       selectedAnswer={question.selectedAnswer}
-      //showAnswer={question.showAnswer}
       clickedAnswer={clickedAnswer}
       checkingAnswers={checkingAnswers}
+      acceptingAnswers={question.acceptingAnswers}
     />
   ));
 
   function startGame() {
-    setGameOn((prev) => !prev);
+    setGameOn((prevGameState) => !prevGameState);
     setGames(0);
-    setGames((prev) => prev + 1);
+    setGames((prevGamesCount) => prevGamesCount + 1);
     setTotalPoints(0);
   }
   function checkAnswers() {
-    setcheckingAnswers((prev) => !prev);
+    setcheckingAnswers((prevCheckingAnswersState) => !prevCheckingAnswersState);
+    setAcceptingAnswers(false);
     questionArray.forEach((question) => {
       if (question.selectedAnswer === question.correct_answer) {
-        setPoints((prev) => prev + 1);
+        setPoints((prevPointsCount) => prevPointsCount + 1);
       }
     });
   }
 
   useEffect(() => {
-    setTotalPoints((prev) => prev + points);
+    setTotalPoints((prevTotalPointsCount) => prevTotalPointsCount + points);
   }, [points]);
 
   function playAgain() {
-    setcheckingAnswers((prev) => !prev);
+    setcheckingAnswers((prevCheckingAnswersState) => !prevCheckingAnswersState);
     setPoints(0);
-    setGames((prev) => prev + 1);
+    setGames((prevGamesCount) => prevGamesCount + 1);
   }
   function clickedAnswer(questionId: string, answer: string) {
     if (checkingAnswers) return;
@@ -77,18 +80,18 @@ function App() {
     );
   }
 
-  function formChange(event: any) {
-    const { name, value, type, checked } = event.target;
+  function formChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    const { name, value, type } = event.target;
     setFormData((prevFormData) => {
       return {
         ...prevFormData,
-        [name]: type === "checkbox" ? checked : value,
+        [name]: value,
       };
     });
   }
 
   function backToMenu() {
-    setGameOn((prev) => !prev);
+    setGameOn((prevGameState) => !prevGameState);
     setGames(0);
   }
 
@@ -149,7 +152,7 @@ function App() {
             </select>
           </form>
           <button
-            className="block font-inter text-white py-4 px-12 bg-[#4D5B9E] rounded-2xl my-0 mx-auto mt-6"
+            className="block font-inter text-white py-3 px-11 bg-[#4D5B9E] rounded-2xl my-0 mx-auto mt-6"
             onClick={startGame}
           >
             Start quiz
@@ -170,18 +173,20 @@ function App() {
                 </p>
 
                 <button
-                  className="block font-inter text-white py-4 px-12 bg-[#4D5B9E] rounded-2xl"
+                  className="block font-inter text-white py-3 px-11 bg-[#4D5B9E] rounded-2xl"
                   onClick={checkAnswers}
                 >
                   Check answers
                 </button>
-                <button onClick={backToMenu}>asd</button>
+                <button onClick={backToMenu}>
+                  <AiOutlineHome size="2.5rem" />
+                </button>
               </div>
             ) : (
               <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-10">
                 <p className="font-bold text-lg">You scored {points}/5 correct answers</p>
                 <button
-                  className="block font-inter text-white py-4 px-12 bg-[#4D5B9E] rounded-2xl  "
+                  className="block font-inter text-white py-3 px-11 bg-[#4D5B9E] rounded-2xl  "
                   onClick={playAgain}
                 >
                   Play again
