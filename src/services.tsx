@@ -1,4 +1,4 @@
-const Fetch_Questions = (formData: any) => {
+const fetchQuestions = (formData: any) => {
   let categoryQuery = "";
   let difficultyQuery = "";
   if (formData.category >= 9) categoryQuery = `&category=${formData.category}`;
@@ -12,4 +12,4 @@ const Fetch_Questions = (formData: any) => {
     .then((data) => data.results);
 };
 
-export default Fetch_Questions;
+export default fetchQuestions;

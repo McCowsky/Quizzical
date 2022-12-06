@@ -1,35 +1,49 @@
 import { nanoid } from "nanoid";
 import React, { useEffect, useState } from "react";
 import Question from "./Question";
-import Fetch_Questions from "./Fetch_Questions";
+import fetchQuestions from "./services";
 import { AiOutlineHome } from "react-icons/ai";
 
 function App() {
-  const [gameOn, setGameOn] = useState(false);
-  const [checkingAnswers, setcheckingAnswers] = useState(false);
+  interface IQuestion {
+    category: number;
+    difficulty: string;
+  }
+
+  const [gameOn, setGameOn] = useState<boolean>(false);
+  const [checkingAnswers, setcheckingAnswers] = useState<boolean>(false);
   const [questionArray, setQuestionArray] = useState([] as any[]);
-  const [points, setPoints] = useState(0);
-  const [totalPoints, setTotalPoints] = useState(0);
-  const [games, setGames] = useState(0);
-  const [formData, setFormData] = useState({
+  const [points, setPoints] = useState<number>(0);
+  const [totalPoints, setTotalPoints] = useState<number>(0);
+  const [games, setGames] = useState<number>(0);
+  const [formData, setFormData] = useState<IQuestion>({
     category: 0,
     difficulty: "any",
   });
-  const [acceptingAnswers, setAcceptingAnswers] = useState(false);
+  const [acceptingAnswers, setAcceptingAnswers] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    Fetch_Questions(formData).then((questions) => {
-      return setQuestionArray(
-        questions.map((question: []) => {
-          return {
-            id: nanoid(),
-            ...question,
-            selectedAnswer: "",
-            acceptingAnswers: true,
-          };
-        })
-      );
-    });
+    setLoading(true);
+    fetchQuestions(formData)
+      .then((questions) => {
+        return setQuestionArray(
+          questions.map((question: []) => {
+            return {
+              id: nanoid(),
+              ...question,
+              selectedAnswer: "",
+              acceptingAnswers: true,
+            };
+          })
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, [games]);
 
   const questionElements = questionArray.map((question) => (
@@ -48,8 +62,7 @@ function App() {
 
   function startGame() {
     setGameOn((prevGameState) => !prevGameState);
-    setGames(0);
-    setGames((prevGamesCount) => prevGamesCount + 1);
+    setGames(1);
     setTotalPoints(0);
   }
   function checkAnswers() {
@@ -94,7 +107,9 @@ function App() {
     setGameOn((prevGameState) => !prevGameState);
     setGames(0);
   }
-
+  if (loading) {
+    return <h2 className="font-bold text-4xl text-center">Loading...</h2>;
+  }
   return (
     <div className="w-full sm:w-[700px] sm:h-[700px] bg-[#F5F7FB] flex justify-center items-center">
       {!gameOn ? (

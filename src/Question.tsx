@@ -10,7 +10,7 @@ interface Question {
   correctAnswer: string;
   incorrectAnswers: string[];
   selectedAnswer: string;
-  clickedAnswer: any;
+  clickedAnswer: (questionId: string, answer: string) => void;
   checkingAnswers: boolean;
   acceptingAnswers: boolean;
 }
@@ -65,7 +65,7 @@ const Question = (props: Question) => {
 
   allAnswersElements.push(correctAnswerElement);
 
-  allAnswersElements = allAnswersElements.sort((a: any, b: any) =>
+  allAnswersElements = allAnswersElements.sort((a, b) =>
     a.props.children.localeCompare(b.props.children)
   );
 
