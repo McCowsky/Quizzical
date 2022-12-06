@@ -7,7 +7,7 @@ import { IQuestion } from "./types";
 import SelectCategory from "./shared/components/select/SelectCategory";
 import SelectDifficulty from "./shared/components/select/SelectDifficulty";
 
-function App() {
+const App: React.FC = () => {
   const [gameOn, setGameOn] = useState<boolean>(false);
   const [checkingAnswers, setcheckingAnswers] = useState<boolean>(false);
   const [questionArray, setQuestionArray] = useState([] as any[]);
@@ -91,7 +91,7 @@ function App() {
     );
   }
 
-  function formChange(event: React.ChangeEvent<HTMLSelectElement>) {
+  const formChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value, type } = event.target;
     setFormData((prevFormData) => {
       return {
@@ -99,7 +99,7 @@ function App() {
         [name]: value,
       };
     });
-  }
+  };
 
   function backToMenu() {
     setGameOn((prevGameState) => !prevGameState);
@@ -172,6 +172,6 @@ function App() {
       )}
     </div>
   );
-}
+};
 
 export default App;

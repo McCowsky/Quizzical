@@ -1,6 +1,12 @@
 import categories from "./categories";
+import { ChangeEvent } from "react";
 
-const SelectCategory = (props: any) => {
+interface SelectCategoryProps {
+  category: number;
+  handleChange: (event: ChangeEvent<HTMLSelectElement>) => void;
+}
+
+const SelectCategory: React.FC<SelectCategoryProps> = (props) => {
   const optionElements = categories.map((category) => (
     <option key={category.value} value={category.value}>
       {category.name}

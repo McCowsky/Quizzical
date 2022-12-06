@@ -1,13 +1,13 @@
 import { IQuestion } from "../../types";
 
 const fetchQuestions = (formData: IQuestion) => {
-  let categoryQuery = "";
-  let difficultyQuery = "";
-  if (formData.category >= 9) categoryQuery = `&category=${formData.category}`;
-  if (formData.difficulty !== "any")
-    difficultyQuery = `&difficulty=${formData.difficulty}`;
+  const searchParams = new URLSearchParams({
+    amount: "5",
+    category: formData.category >= 9 ? formData.category.toString() : "",
+    difficulty: formData.difficulty !== "any" ? formData.difficulty : "",
+  });
 
-  const apiUrl = `https://opentdb.com/api.php?amount=5${categoryQuery}${difficultyQuery}`;
+  const apiUrl = `https://opentdb.com/api.php?${searchParams}`;
 
   return fetch(apiUrl)
     .then((res) => res.json())

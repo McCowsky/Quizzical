@@ -1,6 +1,12 @@
 import difficulties from "./difficulties";
+import { ChangeEvent } from "react";
 
-const SelectCategory = (props: any) => {
+interface SelectCategoryProps {
+  difficulty: string;
+  handleChange: (event: ChangeEvent<HTMLSelectElement>) => void;
+}
+
+const SelectCategory: React.FC<SelectCategoryProps> = (props) => {
   const optionElements = difficulties.map((difficulty) => (
     <option key={difficulty} value={difficulty}>
       {difficulty}
