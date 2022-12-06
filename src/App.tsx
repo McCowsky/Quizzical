@@ -1,15 +1,13 @@
 import { nanoid } from "nanoid";
 import React, { useEffect, useState } from "react";
 import Question from "./Question";
-import fetchQuestions from "./services";
+import fetchQuestions from "./features/questions/services";
 import { AiOutlineHome } from "react-icons/ai";
+import { IQuestion } from "./types";
+import SelectCategory from "./shared/components/select/SelectCategory";
+import SelectDifficulty from "./shared/components/select/SelectDifficulty";
 
 function App() {
-  interface IQuestion {
-    category: number;
-    difficulty: string;
-  }
-
   const [gameOn, setGameOn] = useState<boolean>(false);
   const [checkingAnswers, setcheckingAnswers] = useState<boolean>(false);
   const [questionArray, setQuestionArray] = useState([] as any[]);
@@ -120,51 +118,12 @@ function App() {
           <h1 className="font-bold text-4xl text-center">Quizzical</h1>
           <form action="" className="my-0 mx-auto flex flex-col gap-1">
             <label htmlFor="category">category:</label>
-            <select
-              name="category"
-              id="category"
-              value={formData.category}
-              onChange={formChange}
-              className="w-48 h-8 sm:w-auto sm:h-10 pl-2 mb-3 shadow-[0_0px_5px_0px_rgba(0,0,0,0.5)]"
-            >
-              <option value="0">any</option>
-              <option value="9">General Knowledge</option>
-              <option value="10">Entertainment: Books</option>
-              <option value="11">Entertainment: Film</option>
-              <option value="12">Entertainment: Music</option>
-              <option value="13">Entertainment: Musical & Theatres</option>
-              <option value="14">Entertainment: Television</option>
-              <option value="15">Entertainment: Video Games</option>
-              <option value="16">Entertainment: Board Games</option>
-              <option value="17">Science & Nature </option>
-              <option value="18">Science: Computers</option>
-              <option value="19">Science: Mathematics</option>
-              <option value="20">Mythology</option>
-              <option value="21">Sports</option>
-              <option value="22">Geography</option>
-              <option value="23">History</option>
-              <option value="24">Politics</option>
-              <option value="25">Art</option>
-              <option value="26">Celebrities</option>
-              <option value="27">Animals</option>
-              <option value="28">Vehicles</option>
-              <option value="29">Entertainment: Comics</option>
-              <option value="30">Science: Gadgets</option>
-            </select>
-
+            <SelectCategory category={formData.category} handleChange={formChange} />
             <label htmlFor="difficulty">difficulty:</label>
-            <select
-              name="difficulty"
-              id="difficulty"
-              value={formData.difficulty}
-              onChange={formChange}
-              className="h-10 pl-2 shadow-[0_0px_5px_0px_rgba(0,0,0,0.5)]"
-            >
-              <option value="any">any</option>
-              <option value="easy">easy</option>
-              <option value="medium">medium</option>
-              <option value="hard">hard</option>
-            </select>
+            <SelectDifficulty
+              difficulty={formData.difficulty}
+              handleChange={formChange}
+            />
           </form>
           <button
             className="block font-inter text-white py-3 px-11 bg-[#4D5B9E] rounded-2xl my-0 mx-auto mt-6"

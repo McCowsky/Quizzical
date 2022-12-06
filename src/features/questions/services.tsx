@@ -1,4 +1,6 @@
-const fetchQuestions = (formData: any) => {
+import { IQuestion } from "../../types";
+
+const fetchQuestions = (formData: IQuestion) => {
   let categoryQuery = "";
   let difficultyQuery = "";
   if (formData.category >= 9) categoryQuery = `&category=${formData.category}`;

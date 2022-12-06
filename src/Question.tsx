@@ -1,21 +1,9 @@
 import { nanoid } from "nanoid";
 import { decode } from "html-entities";
-//import arrayShuffle from "array-shuffle";
+import { QuestionProps } from "./types";
+import React from "react";
 
-import React, { useEffect, useState } from "react";
-
-interface Question {
-  id: string;
-  question: string;
-  correctAnswer: string;
-  incorrectAnswers: string[];
-  selectedAnswer: string;
-  clickedAnswer: (questionId: string, answer: string) => void;
-  checkingAnswers: boolean;
-  acceptingAnswers: boolean;
-}
-
-const Question = (props: Question) => {
+const Question: React.FC<QuestionProps> = (props) => {
   let allAnswersElements = props.incorrectAnswers.map((incorrectAnswer: string) => {
     return (
       <button
