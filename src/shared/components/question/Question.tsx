@@ -1,19 +1,19 @@
 import { nanoid } from "nanoid";
 import { decode } from "html-entities";
-import { QuestionProps } from "./types";
+import { QuestionProps } from "../../../types";
 import React from "react";
 
 const Question: React.FC<QuestionProps> = ({
-  incorrectAnswers,
+  incorrect_answers,
   selectedAnswer,
   checkingAnswers,
   acceptingAnswers,
   id,
   clickedAnswer,
-  correctAnswer,
+  correct_answer,
   question,
 }) => {
-  let allAnswersElements = incorrectAnswers.map((incorrectAnswer: string) => {
+  let allAnswersElements = incorrect_answers.map((incorrectAnswer: string) => {
     return (
       <button
         key={nanoid()}
@@ -43,7 +43,7 @@ const Question: React.FC<QuestionProps> = ({
       style={{
         backgroundColor: checkingAnswers
           ? "#94D7A2"
-          : selectedAnswer === correctAnswer
+          : selectedAnswer === correct_answer
           ? "#D6DBF5"
           : "#f5f7fb", //f5f7fb
       }}
@@ -53,10 +53,10 @@ const Question: React.FC<QuestionProps> = ({
       onClick={() => {
         if (!acceptingAnswers) return;
 
-        clickedAnswer(id, correctAnswer);
+        clickedAnswer(id, correct_answer);
       }}
     >
-      {decode(correctAnswer)}
+      {decode(correct_answer)}
     </button>
   );
 
